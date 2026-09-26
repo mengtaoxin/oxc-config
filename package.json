@@ -1,0 +1,29 @@
+{
+  "name": "@mengtaoxin/oxc-config",
+  "version": "0.1.0",
+  "description": "Shared Oxlint and Oxfmt configs for mengtaoxin projects",
+  "license": "MIT",
+  "author": {
+    "name": "mengtao",
+    "email": "mengtaoxin@outlook.com"
+  },
+  "type": "module",
+  "exports": {
+    "./react": "./src/react.js",
+    "./node": "./src/node.js",
+    "./fmt": "./src/fmt.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "oxfmt": ">=0.70.0",
+    "oxlint": ">=1.85.0"
+  },
+  "keywords": [
+    "oxlint",
+    "oxfmt",
+    "config"
+  ]
+}

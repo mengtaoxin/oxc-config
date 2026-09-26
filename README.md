@@ -1,0 +1,65 @@
+# @mengtaoxin/oxc-config
+
+Shared [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) and [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) configs.
+
+## Presets
+
+| Import | Use for |
+| --- | --- |
+| `@mengtaoxin/oxc-config/react` | React / browser apps (`prate`, `tdbook`, `tdmusic`, …) |
+| `@mengtaoxin/oxc-config/node` | Node / CLI packages (`my-infra` scripts, …) |
+| `@mengtaoxin/oxc-config/fmt` | Shared formatter options |
+
+## Install
+
+Local sibling repo (current setup):
+
+```json
+{
+  "devDependencies": {
+    "@mengtaoxin/oxc-config": "file:../oxc-config",
+    "oxlint": "^1.85.0",
+    "oxfmt": "^0.70.0"
+  }
+}
+```
+
+Or later via git:
+
+```json
+{
+  "devDependencies": {
+    "@mengtaoxin/oxc-config": "github:mengtaoxin/oxc-config#v0.1.0"
+  }
+}
+```
+
+## Usage
+
+`oxlint.config.ts`:
+
+```ts
+import { defineConfig } from 'oxlint';
+import react from '@mengtaoxin/oxc-config/react';
+
+export default defineConfig({
+  extends: [react],
+  // Required: otherwise Oxlint unions default plugins back onto the preset.
+  plugins: [],
+  ignorePatterns: ['src/routeTree.gen.ts'], // project-only
+});
+```
+
+`oxfmt.config.ts`:
+
+```ts
+import { defineConfig } from 'oxfmt';
+import fmt from '@mengtaoxin/oxc-config/fmt';
+
+export default defineConfig({
+  ...fmt,
+  ignorePatterns: [...(fmt.ignorePatterns ?? []), 'src/routeTree.gen.ts'],
+});
+```
+
+> `.oxlintrc.json` cannot `extends` npm packages — use `oxlint.config.ts` / `oxfmt.config.ts`.
