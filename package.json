@@ -25,5 +25,12 @@
     "oxlint",
     "oxfmt",
     "config"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mengtaoxin/oxc-config.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

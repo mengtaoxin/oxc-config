@@ -12,24 +12,31 @@ Shared [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) and [Oxfmt](https:/
 
 ## Install
 
-Local sibling repo (current setup):
+Published on [GitHub Packages](https://github.com/mengtaoxin/oxc-config/pkgs/npm/oxc-config). Add to `.npmrc`:
+
+```
+@mengtaoxin:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+Then:
 
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "file:../oxc-config",
+    "@mengtaoxin/oxc-config": "^0.1.0",
     "oxlint": "^1.85.0",
     "oxfmt": "^0.70.0"
   }
 }
 ```
 
-Or later via git:
+Local sibling repo (optional while iterating):
 
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "github:mengtaoxin/oxc-config#v0.1.0"
+    "@mengtaoxin/oxc-config": "file:../oxc-config"
   }
 }
 ```
