@@ -10,7 +10,7 @@ const config = {
   arrowParens: 'always',
   endOfLine: 'lf',
   jsxSingleQuote: false,
-  sortPackageJson: false,
+  sortPackageJson: true,
   ignorePatterns: ['node_modules/', 'dist/', 'package-lock.json'],
 };
 
