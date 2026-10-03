@@ -1,6 +1,6 @@
 {
   "name": "@mengtaoxin/oxc-config",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Shared Oxlint and Oxfmt configs for mengtaoxin projects",
   "license": "MIT",
   "author": {
