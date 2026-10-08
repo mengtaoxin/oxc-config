@@ -1,6 +1,6 @@
 /** @type {import('oxlint').OxlintConfig} */
 const config = {
-  plugins: ['typescript', 'react'],
+  plugins: ['typescript', 'react', 'import'],
   env: {
     browser: true,
   },
@@ -26,6 +26,10 @@ const config = {
     'typescript/no-unsafe-function-type': 'warn',
     'typescript/no-namespace': 'warn',
     'typescript/no-require-imports': 'warn',
+    // Auto-fixable; keeps `import type` separate (unlike `no-duplicate-imports`).
+    'import/no-duplicates': 'error',
+    // Side-effect imports (CSS, polyfills, locales) are intentional.
+    'import/no-unassigned-import': 'off',
     'react/rules-of-hooks': 'error',
     'react/only-export-components': ['warn', { allowConstantExport: true }],
     'react/react-in-jsx-scope': 'off',

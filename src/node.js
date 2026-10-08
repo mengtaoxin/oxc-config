@@ -1,6 +1,6 @@
 /** @type {import('oxlint').OxlintConfig} */
 const config = {
-  plugins: ['typescript', 'unicorn', 'oxc'],
+  plugins: ['typescript', 'unicorn', 'oxc', 'import'],
   env: {
     builtin: true,
   },
@@ -26,6 +26,10 @@ const config = {
     'typescript/no-unsafe-function-type': 'warn',
     'typescript/no-namespace': 'warn',
     'typescript/no-require-imports': 'warn',
+    // Auto-fixable; keeps `import type` separate (unlike `no-duplicate-imports`).
+    'import/no-duplicates': 'error',
+    // Side-effect imports (CSS, polyfills, locales) are intentional.
+    'import/no-unassigned-import': 'off',
   },
   ignorePatterns: ['node_modules', 'dist'],
 };

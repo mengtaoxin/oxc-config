@@ -24,7 +24,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.3.0",
+    "@mengtaoxin/oxc-config": "^0.4.0",
     "oxlint": "^1.85.0",
     "oxfmt": "^0.70.0"
   }
