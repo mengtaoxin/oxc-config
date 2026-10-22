@@ -88,7 +88,7 @@ export default defineConfig({
 
 `options.typeAware` is set on the preset and is merged into the root config when you `extends` it. Type-aware lint needs:
 
-- `oxlint-tsgolint` `>=7.0.2001`, declared as a peer dependency. npm installs it with this package. If the tree already has an older copy, npm reports the unmet peer. `./node` needs it at runtime, plus a `tsconfig.json` that includes the files Oxlint checks.
+- `oxlint-tsgolint` `>=7.0.2001`, declared as a peer dependency. npm installs it with this package. `./node` needs it at runtime, plus a `tsconfig.json` that includes the files Oxlint checks.
 
 Warnings from `suspicious`, `perf`, and the suggestion rules below still do not fail the process. To fail on them too, set `options: { denyWarnings: true }` in the root config (it merges with `typeAware`).
 
