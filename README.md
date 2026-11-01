@@ -6,7 +6,7 @@ Shared [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) and [Oxfmt](https:/
 
 | Import | Use for |
 | --- | --- |
-| `@mengtaoxin/oxc-config/react` | React / browser apps (`prate`, `tdbook`, `tdmusic`, …) |
+| `@mengtaoxin/oxc-config/react` | React / browser apps (`prate`, `tdbook`, `tdmusic`, …). Recommended, with type-aware lint on |
 | `@mengtaoxin/oxc-config/node` | Node / CLI packages. Recommended, with type-aware lint on |
 | `@mengtaoxin/oxc-config/fmt` | Shared formatter options |
 
@@ -24,7 +24,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.5.1",
+    "@mengtaoxin/oxc-config": "^0.6.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2001",
     "oxfmt": "^0.70.0"
@@ -72,9 +72,9 @@ export default defineConfig({
 
 > `.oxlintrc.json` cannot `extends` npm packages — use `oxlint.config.ts` / `oxfmt.config.ts`.
 
-## Node preset
+## Lint presets
 
-`./node` follows `eslint:recommended` and `@typescript-eslint/recommended`, and adds the promise/async rules from `recommended-type-checked`. `./react` is unchanged.
+`./node` and `./react` follow `eslint:recommended` and `@typescript-eslint/recommended`, and add the promise/async rules from `recommended-type-checked`. `./react` also keeps the React hooks rules and TanStack Router override from earlier releases.
 
 ```ts
 import { defineConfig } from 'oxlint';
@@ -86,15 +86,15 @@ export default defineConfig({
 });
 ```
 
-`options.typeAware` is set on the preset and is merged into the root config when you `extends` it. Type-aware lint needs:
+`options.typeAware` is set on both presets and is merged into the root config when you `extends` them. Type-aware lint needs:
 
-- `oxlint-tsgolint` `>=7.0.2001`, declared as a peer dependency. npm installs it with this package. `./node` needs it at runtime, plus a `tsconfig.json` that includes the files Oxlint checks.
+- `oxlint-tsgolint` `>=7.0.2001`, declared as a peer dependency. npm installs it with this package. Both presets need it at runtime, plus a `tsconfig.json` that includes the files Oxlint checks.
 
 Warnings from `suspicious`, `perf`, and the suggestion rules below still do not fail the process. To fail on them too, set `options: { denyWarnings: true }` in the root config (it merges with `typeAware`).
 
 ### Type-aware rules
 
-`typeAware` turns on every type-aware rule whose category is enabled. Only the `typescript` plugin has type-aware rules (`unicorn`, `oxc`, and `import` add none). This preset sets `correctness` to error and `suspicious` to warn, so `./node` runs the rules below. `perf` has no type-aware rules. `pedantic`, `style`, `restriction`, and `nursery` stay off.
+`typeAware` turns on every type-aware rule whose category is enabled. Only the `typescript` plugin has type-aware rules (`unicorn`, `oxc`, `import`, and `react` add none). Both presets set `correctness` to error and `suspicious` to warn, so they run the rules below. `perf` has no type-aware rules. `pedantic`, `style`, `restriction`, and `nursery` stay off.
 
 The table matches `oxlint --rules` and a resolved `oxlint --print-config` for oxlint 1.85.0 through 1.89.0. A newer oxlint can add rules to `correctness` or `suspicious`; those run at the category severity.
 
@@ -130,7 +130,7 @@ The table matches `oxlint --rules` and a resolved `oxlint --print-config` for ox
 
 ### 0.5.0
 
-Raised to `error`, matching the recommended configs:
+Raised to `error` on `./node` only, matching the recommended configs:
 
 - `no-empty`, `no-prototype-builtins`, `no-regex-spaces`
 - `typescript/no-explicit-any`, `typescript/ban-ts-comment`, `typescript/no-empty-object-type`, `typescript/no-unsafe-function-type`, `typescript/no-namespace`, `typescript/no-require-imports`
@@ -150,3 +150,12 @@ Left as they were:
 
 - `oxlint-tsgolint` `>=7.0.2001` is a required peer, so npm installs it with this package.
 - The type-aware rules `./node` actually runs are listed above.
+
+### 0.6.0
+
+Brought `./react` up to the same recommended + type-aware bar as `./node` in 0.5.0:
+
+- Raised to `error`: `no-empty`, `no-prototype-builtins`, `no-regex-spaces`, and the `@typescript-eslint/recommended` rules that were still warnings
+- Enabled `options.typeAware` and the promise/async rules (`no-floating-promises`, `no-misused-promises`, `await-thenable`, `require-await`) as `error`
+- Left React-specific knobs alone: `react-hooks/exhaustive-deps` stays `warn`; the intentional `react/*` offs and TanStack Router override stay as they were
+- Suggestion rules (`prefer-const`, …) and `pedantic` / `style` / `restriction` / `nursery` stay off or warn
