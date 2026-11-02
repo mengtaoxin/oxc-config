@@ -1,6 +1,6 @@
 {
   "name": "@mengtaoxin/oxc-config",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Shared Oxlint and Oxfmt configs for mengtaoxin projects",
   "license": "MIT",
   "author": {
@@ -9,6 +9,10 @@
   },
   "type": "module",
   "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
     "./react": {
       "types": "./src/react.d.ts",
       "default": "./src/react.js"
@@ -16,6 +20,10 @@
     "./node": {
       "types": "./src/node.d.ts",
       "default": "./src/node.js"
+    },
+    "./fastify": {
+      "types": "./src/fastify.d.ts",
+      "default": "./src/fastify.js"
     },
     "./fmt": {
       "types": "./src/fmt.d.ts",

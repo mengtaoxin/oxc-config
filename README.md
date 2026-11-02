@@ -2,12 +2,24 @@
 
 Shared [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) and [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) configs.
 
-## Presets
+## Stacks
+
+Compose lint config from parallel facts. Call order does not matter; conflict resolution uses weights defined in this package (higher wins).
+
+| Name | Kind | Weight | Effect |
+| --- | --- | --- | --- |
+| `nodejs` | environment | 10 | Node / CLI base (`./node`). Alias: `node` |
+| `react` | environment | 10 | React / browser base (`./react`) |
+| `fastify` | addon | 50 | Turns off `oxc/no-async-endpoint-handlers` (Express-oriented) |
+
+Exactly one environment stack is required. Addons are optional and parallel — not subclasses of each other.
 
 | Import | Use for |
 | --- | --- |
-| `@mengtaoxin/oxc-config/react` | React / browser apps (`prate`, `tdbook`, `tdmusic`, …). Recommended, with type-aware lint on |
-| `@mengtaoxin/oxc-config/node` | Node / CLI packages. Recommended, with type-aware lint on |
+| `@mengtaoxin/oxc-config` → `stack` | Preferred: `extends: stack("nodejs", "fastify")` |
+| `@mengtaoxin/oxc-config/react` | Legacy single preset (same as `stack("react")`) |
+| `@mengtaoxin/oxc-config/node` | Legacy single preset (same as `stack("nodejs")`) |
+| `@mengtaoxin/oxc-config/fastify` | Fastify addon only (prefer via `stack`) |
 | `@mengtaoxin/oxc-config/fmt` | Shared formatter options |
 
 ## Install
@@ -24,7 +36,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.7.0",
+    "@mengtaoxin/oxc-config": "^0.8.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2001",
     "oxfmt": "^0.70.0"
@@ -48,13 +60,27 @@ Local sibling repo (optional while iterating):
 
 ```ts
 import { defineConfig } from "oxlint";
-import react from "@mengtaoxin/oxc-config/react";
+import { stack } from "@mengtaoxin/oxc-config";
 
 export default defineConfig({
-  extends: [react],
+  // Same result as stack("fastify", "nodejs") — order does not matter.
+  extends: stack("nodejs", "fastify"),
   // Required: otherwise Oxlint unions default plugins back onto the preset.
   plugins: [],
-  ignorePatterns: ["src/routeTree.gen.ts"], // project-only
+  ignorePatterns: ["tmp", "db/migrations"], // project-only
+});
+```
+
+React app without addons:
+
+```ts
+import { defineConfig } from "oxlint";
+import { stack } from "@mengtaoxin/oxc-config";
+
+export default defineConfig({
+  extends: stack("react"),
+  plugins: [],
+  ignorePatterns: ["src/routeTree.gen.ts"],
 });
 ```
 
@@ -74,19 +100,9 @@ export default defineConfig({
 
 ## Lint presets
 
-`./node` and `./react` follow `eslint:recommended` and `@typescript-eslint/recommended`, and add the promise/async rules from `recommended-type-checked`. `./react` also keeps the React hooks rules and TanStack Router override from earlier releases.
+`nodejs` / `./node` and `react` / `./react` follow `eslint:recommended` and `@typescript-eslint/recommended`, and add the promise/async rules from `recommended-type-checked`. `react` also keeps the React hooks rules and TanStack Router override from earlier releases.
 
-```ts
-import { defineConfig } from "oxlint";
-import node from "@mengtaoxin/oxc-config/node";
-
-export default defineConfig({
-  extends: [node],
-  plugins: [],
-});
-```
-
-`options.typeAware` is set on both presets and is merged into the root config when you `extends` them. Type-aware lint needs:
+`options.typeAware` is set on both environment stacks and is merged into the root config when you `extends` them. Type-aware lint needs:
 
 - `oxlint-tsgolint` `>=7.0.2001`, declared as a peer dependency. npm installs it with this package. Both presets need it at runtime, plus a `tsconfig.json` that includes the files Oxlint checks.
 
@@ -163,3 +179,9 @@ Brought `./react` up to the same recommended + type-aware bar as `./node` in 0.5
 ### 0.7.0
 
 - `./fmt`: `singleQuote` is now `false` (double quotes), matching oxfmt/Prettier defaults. Expect a repo-wide quote reformat when upgrading.
+
+### 0.8.0
+
+- Added `stack(...names)` from `@mengtaoxin/oxc-config`. Stacks are parallel facts with package-defined weights; argument order does not change the result.
+- Added `fastify` addon (disables `oxc/no-async-endpoint-handlers`).
+- `./node`, `./react`, and `./fmt` remain available for existing imports.
