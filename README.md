@@ -36,7 +36,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.8.0",
+    "@mengtaoxin/oxc-config": "^0.9.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2001",
     "oxfmt": "^0.70.0"
@@ -185,3 +185,23 @@ Brought `./react` up to the same recommended + type-aware bar as `./node` in 0.5
 - Added `stack(...names)` from `@mengtaoxin/oxc-config`. Stacks are parallel facts with package-defined weights; argument order does not change the result.
 - Added `fastify` addon (disables `oxc/no-async-endpoint-handlers`).
 - `./node`, `./react`, and `./fmt` remain available for existing imports.
+
+### 0.9.0
+
+Bans TypeScript `enum` on `nodejs` / `./node` and `react` / `./react` (prefer `as const` objects or string literal unions):
+
+| Rule | Severity | Notes |
+| --- | --- | --- |
+| `oxc/no-const-enum` | error | Native; `const enum` (autofix available) |
+| `oxc-config/no-enum` | error | Custom JS plugin; non-const `enum`. Skips `declare enum` |
+
+```ts
+// Instead of:
+enum Status { Open = "open", Closed = "closed" }
+
+// Prefer:
+const Status = { Open: "open", Closed: "closed" } as const;
+type Status = (typeof Status)[keyof typeof Status];
+```
+
+JS plugins are alpha in Oxlint; this preset ships a tiny plugin and wires it with an absolute path so `extends: stack(...)` resolves correctly.

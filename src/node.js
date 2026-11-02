@@ -1,6 +1,10 @@
+import { enumRules, jsPlugins } from "./js-plugins.js";
+
 /** @type {import("oxlint").OxlintConfig} */
 const config = {
   plugins: ["typescript", "unicorn", "oxc", "import"],
+  // Absolute path; required when this object is consumed via `extends`.
+  jsPlugins,
   env: {
     builtin: true,
   },
@@ -38,6 +42,8 @@ const config = {
     "typescript/no-misused-promises": "error",
     "typescript/await-thenable": "error",
     "typescript/require-await": "error",
+    // Ban TS enums; prefer `as const` objects or string unions.
+    ...enumRules,
     // Auto-fixable; keeps `import type` separate (unlike `no-duplicate-imports`).
     "import/no-duplicates": "error",
     // Side-effect imports (CSS, polyfills, locales) are intentional.
