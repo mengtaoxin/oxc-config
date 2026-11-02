@@ -1,0 +1,22 @@
+---
+description: SemVer version bumps and CI-only publishes via git tags
+alwaysApply: true
+---
+
+# Release
+
+When the user asks to release / publish / ship a new version:
+
+1. **Bump the version** in `package.json` (and README install examples if they pin a version). Choose major / minor / patch yourself from the change set, following [Semantic Versioning 2.0.0](https://semver.org/).
+2. Commit the version bump with the release changes (follow existing commit style, e.g. `feat(...): … and release X.Y.Z`).
+3. **Publish only via CI**: create annotated tag `vX.Y.Z` matching `package.json`, then `git push origin <branch>` and `git push origin vX.Y.Z`. The `Publish` workflow (`.github/workflows/publish.yml`) runs on `v*` tags.
+
+## Do not
+
+- Run local `npm publish` / `npm publish --ignore-scripts`
+- Use `gh release create` or other local commands as a substitute for the tag-triggered workflow
+- Push a tag whose version does not match `package.json`
+
+## After push
+
+Confirm the Actions run for tag `vX.Y.Z` succeeded. Do not retry publish locally if CI failed—fix the workflow or tag mismatch instead.
