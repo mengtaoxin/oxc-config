@@ -24,7 +24,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.6.0",
+    "@mengtaoxin/oxc-config": "^0.7.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2001",
     "oxfmt": "^0.70.0"
@@ -47,26 +47,26 @@ Local sibling repo (optional while iterating):
 `oxlint.config.ts`:
 
 ```ts
-import { defineConfig } from 'oxlint';
-import react from '@mengtaoxin/oxc-config/react';
+import { defineConfig } from "oxlint";
+import react from "@mengtaoxin/oxc-config/react";
 
 export default defineConfig({
   extends: [react],
   // Required: otherwise Oxlint unions default plugins back onto the preset.
   plugins: [],
-  ignorePatterns: ['src/routeTree.gen.ts'], // project-only
+  ignorePatterns: ["src/routeTree.gen.ts"], // project-only
 });
 ```
 
 `oxfmt.config.ts`:
 
 ```ts
-import { defineConfig } from 'oxfmt';
-import fmt from '@mengtaoxin/oxc-config/fmt';
+import { defineConfig } from "oxfmt";
+import fmt from "@mengtaoxin/oxc-config/fmt";
 
 export default defineConfig({
   ...fmt,
-  ignorePatterns: [...(fmt.ignorePatterns ?? []), 'src/routeTree.gen.ts'],
+  ignorePatterns: [...(fmt.ignorePatterns ?? []), "src/routeTree.gen.ts"],
 });
 ```
 
@@ -77,8 +77,8 @@ export default defineConfig({
 `./node` and `./react` follow `eslint:recommended` and `@typescript-eslint/recommended`, and add the promise/async rules from `recommended-type-checked`. `./react` also keeps the React hooks rules and TanStack Router override from earlier releases.
 
 ```ts
-import { defineConfig } from 'oxlint';
-import node from '@mengtaoxin/oxc-config/node';
+import { defineConfig } from "oxlint";
+import node from "@mengtaoxin/oxc-config/node";
 
 export default defineConfig({
   extends: [node],
@@ -159,3 +159,7 @@ Brought `./react` up to the same recommended + type-aware bar as `./node` in 0.5
 - Enabled `options.typeAware` and the promise/async rules (`no-floating-promises`, `no-misused-promises`, `await-thenable`, `require-await`) as `error`
 - Left React-specific knobs alone: `react-hooks/exhaustive-deps` stays `warn`; the intentional `react/*` offs and TanStack Router override stay as they were
 - Suggestion rules (`prefer-const`, …) and `pedantic` / `style` / `restriction` / `nursery` stay off or warn
+
+### 0.7.0
+
+- `./fmt`: `singleQuote` is now `false` (double quotes), matching oxfmt/Prettier defaults. Expect a repo-wide quote reformat when upgrading.
