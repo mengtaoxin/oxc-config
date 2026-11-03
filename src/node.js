@@ -44,6 +44,10 @@ const config = {
     "typescript/require-await": "error",
     // Ban TS enums; prefer `as const` objects or string unions.
     ...enumRules,
+    // Off: high noise / not gate-worthy as error (see issue #6).
+    "typescript/no-unsafe-type-assertion": "off",
+    "typescript/no-unnecessary-type-conversion": "off",
+    "typescript/no-unnecessary-type-assertion": "off",
     // Auto-fixable; keeps `import type` separate (unlike `no-duplicate-imports`).
     "import/no-duplicates": "error",
     // Side-effect imports (CSS, polyfills, locales) are intentional.

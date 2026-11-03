@@ -36,7 +36,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.9.0",
+    "@mengtaoxin/oxc-config": "^0.9.1",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2001",
     "oxfmt": "^0.70.0"
@@ -110,9 +110,9 @@ Warnings from `suspicious`, `perf`, and the suggestion rules below still do not 
 
 ### Type-aware rules
 
-`typeAware` turns on every type-aware rule whose category is enabled. Only the `typescript` plugin has type-aware rules (`unicorn`, `oxc`, `import`, and `react` add none). Both presets set `correctness` to error and `suspicious` to warn, so they run the rules below. `perf` has no type-aware rules. `pedantic`, `style`, `restriction`, and `nursery` stay off.
+`typeAware` turns on every type-aware rule whose category is enabled. Only the `typescript` plugin has type-aware rules (`unicorn`, `oxc`, `import`, and `react` add none). Both presets set `correctness` to error and `suspicious` to warn, so they run the rules below unless the preset sets them to `off`. `perf` has no type-aware rules. `pedantic`, `style`, `restriction`, and `nursery` stay off.
 
-The table matches `oxlint --rules` and a resolved `oxlint --print-config` for oxlint 1.85.0 through 1.89.0. A newer oxlint can add rules to `correctness` or `suspicious`; those run at the category severity.
+The table matches `oxlint --rules` and a resolved `oxlint --print-config` for oxlint 1.85.0 through 1.89.0. A newer oxlint can add rules to `correctness` or `suspicious`; those run at the category severity unless overridden.
 
 | Rule | Severity | Why |
 | --- | --- | --- |
@@ -137,11 +137,11 @@ The table matches `oxlint --rules` and a resolved `oxlint --print-config` for ox
 | `typescript/no-unnecessary-boolean-literal-compare` | warn | `suspicious` |
 | `typescript/no-unnecessary-template-expression` | warn | `suspicious` |
 | `typescript/no-unnecessary-type-arguments` | warn | `suspicious` |
-| `typescript/no-unnecessary-type-assertion` | warn | `suspicious` |
-| `typescript/no-unnecessary-type-conversion` | warn | `suspicious` |
+| `typescript/no-unnecessary-type-assertion` | off | Explicit override; noisy, not gate-worthy as error |
+| `typescript/no-unnecessary-type-conversion` | off | Explicit override; type-noop conversions often mark DB/driver boundaries |
 | `typescript/no-unnecessary-type-parameters` | warn | `suspicious` |
 | `typescript/no-unsafe-enum-comparison` | warn | `suspicious` |
-| `typescript/no-unsafe-type-assertion` | warn | `suspicious` |
+| `typescript/no-unsafe-type-assertion` | off | Explicit override; high hit rate on tests / `unknown`→T / generics |
 | `typescript/no-generated-empty-object-type` | warn | `suspicious` from oxlint 1.86.0. oxlint 1.85.x does not ship this rule |
 
 ### 0.5.0
@@ -185,6 +185,14 @@ Brought `./react` up to the same recommended + type-aware bar as `./node` in 0.5
 - Added `stack(...names)` from `@mengtaoxin/oxc-config`. Stacks are parallel facts with package-defined weights; argument order does not change the result.
 - Added `fastify` addon (disables `oxc/no-async-endpoint-handlers`).
 - `./node`, `./react`, and `./fmt` remain available for existing imports.
+
+### 0.9.1
+
+On `nodejs` / `./node` and `react` / `./react`, turns off three type-aware `suspicious` rules that were warn-only noise:
+
+- `typescript/no-unsafe-type-assertion`
+- `typescript/no-unnecessary-type-conversion`
+- `typescript/no-unnecessary-type-assertion`
 
 ### 0.9.0
 
