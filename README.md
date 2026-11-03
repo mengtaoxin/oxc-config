@@ -36,7 +36,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.9.1",
+    "@mengtaoxin/oxc-config": "^0.10.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2001",
     "oxfmt": "^0.70.0"
@@ -138,7 +138,7 @@ The table matches `oxlint --rules` and a resolved `oxlint --print-config` for ox
 | `typescript/no-unnecessary-template-expression` | warn | `suspicious` |
 | `typescript/no-unnecessary-type-arguments` | warn | `suspicious` |
 | `typescript/no-unnecessary-type-assertion` | off | Explicit override; noisy, not gate-worthy as error |
-| `typescript/no-unnecessary-type-conversion` | off | Explicit override; type-noop conversions often mark DB/driver boundaries |
+| `typescript/no-unnecessary-type-conversion` | error | Set in the preset; type-noop conversions are usually dead code |
 | `typescript/no-unnecessary-type-parameters` | warn | `suspicious` |
 | `typescript/no-unsafe-enum-comparison` | warn | `suspicious` |
 | `typescript/no-unsafe-type-assertion` | off | Explicit override; high hit rate on tests / `unknown`→T / generics |
@@ -185,6 +185,10 @@ Brought `./react` up to the same recommended + type-aware bar as `./node` in 0.5
 - Added `stack(...names)` from `@mengtaoxin/oxc-config`. Stacks are parallel facts with package-defined weights; argument order does not change the result.
 - Added `fastify` addon (disables `oxc/no-async-endpoint-handlers`).
 - `./node`, `./react`, and `./fmt` remain available for existing imports.
+
+### 0.10.0
+
+On `nodejs` / `./node` and `react` / `./react`, raises `typescript/no-unnecessary-type-conversion` to `error` (was off in 0.9.1). Keeps `typescript/no-unsafe-type-assertion` and `typescript/no-unnecessary-type-assertion` off.
 
 ### 0.9.1
 

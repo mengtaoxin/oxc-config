@@ -44,9 +44,10 @@ const config = {
     "typescript/require-await": "error",
     // Ban TS enums; prefer `as const` objects or string unions.
     ...enumRules,
+    // Gate dead Number()/String()/Boolean() no-ops (see issue #7).
+    "typescript/no-unnecessary-type-conversion": "error",
     // Off: high noise / not gate-worthy as error (see issue #6).
     "typescript/no-unsafe-type-assertion": "off",
-    "typescript/no-unnecessary-type-conversion": "off",
     "typescript/no-unnecessary-type-assertion": "off",
     // Auto-fixable; keeps `import type` separate (unlike `no-duplicate-imports`).
     "import/no-duplicates": "error",
