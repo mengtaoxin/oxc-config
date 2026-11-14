@@ -36,7 +36,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.10.0",
+    "@mengtaoxin/oxc-config": "^0.11.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2001",
     "oxfmt": "^0.70.0"
@@ -185,6 +185,10 @@ Brought `./react` up to the same recommended + type-aware bar as `./node` in 0.5
 - Added `stack(...names)` from `@mengtaoxin/oxc-config`. Stacks are parallel facts with package-defined weights; argument order does not change the result.
 - Added `fastify` addon (disables `oxc/no-async-endpoint-handlers`).
 - `./node`, `./react`, and `./fmt` remain available for existing imports.
+
+### 0.11.0
+
+On `nodejs` / `./node` and `react` / `./react`, raises `prefer-const` and `no-array-constructor` to `error` (were warn). Leaves `prefer-rest-params` and `prefer-spread` as warn.
 
 ### 0.10.0
 

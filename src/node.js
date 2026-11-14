@@ -25,11 +25,11 @@ const config = {
     "no-prototype-builtins": "error",
     "no-regex-spaces": "error",
     "no-var": "error",
-    // Suggestions. Not part of eslint:recommended.
-    "prefer-const": "warn",
+    // Autofixable suggestions; prefer-const / no-array-constructor are gate-worthy.
+    "prefer-const": "error",
     "prefer-rest-params": "warn",
     "prefer-spread": "warn",
-    "no-array-constructor": "warn",
+    "no-array-constructor": "error",
     // @typescript-eslint/recommended
     "typescript/no-explicit-any": "error",
     "typescript/ban-ts-comment": "error",
