@@ -1,0 +1,25 @@
+# Shared lychee config for mengtaoxin projects.
+# Local Markdown links only; network (http/https) checks are deferred.
+
+# Block network requests; only verify local / relative file links.
+offline = true
+
+# Scan Markdown when given a directory or glob.
+extensions = ["md", "markdown", "mdx"]
+
+# Docs often link without an extension; try these when resolving.
+fallback_extensions = ["md", "html"]
+
+# Skip links inside code / verbatim blocks.
+include_verbatim = false
+
+# Mailto needs DNS / MX; not in scope for offline local checks.
+include_mail = false
+
+# Paths to skip even if not covered by .gitignore.
+exclude_path = [
+  "(^|/)node_modules/",
+  "(^|/)dist/",
+  "(^|/)coverage/",
+  "(^|/)\\.git/",
+]

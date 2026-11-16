@@ -1,6 +1,6 @@
 # @mengtaoxin/oxc-config
 
-Shared [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) and [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) configs.
+Shared [Oxlint](https://oxc.rs/docs/guide/usage/linter.html), [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html), and [lychee](https://lychee.cli.rs/) configs.
 
 ## Stacks
 
@@ -21,6 +21,7 @@ Exactly one environment stack is required. Addons are optional and parallel — 
 | `@mengtaoxin/oxc-config/node` | Legacy single preset (same as `stack("nodejs")`) |
 | `@mengtaoxin/oxc-config/fastify` | Fastify addon only (prefer via `stack`) |
 | `@mengtaoxin/oxc-config/fmt` | Shared formatter options |
+| `@mengtaoxin/oxc-config/lychee.toml` | Shared lychee config (local Markdown links, offline) |
 
 ## Install
 
@@ -36,7 +37,7 @@ Then:
 ```json
 {
   "devDependencies": {
-    "@mengtaoxin/oxc-config": "^0.11.0",
+    "@mengtaoxin/oxc-config": "^0.12.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2001",
     "oxfmt": "^0.70.0"
@@ -97,6 +98,26 @@ export default defineConfig({
 ```
 
 > `.oxlintrc.json` cannot `extends` npm packages — use `oxlint.config.ts` / `oxfmt.config.ts`.
+
+### lychee (Markdown links)
+
+[lychee](https://lychee.cli.rs/) is an external CLI (not an npm dependency of this package). Install it on the host ([install guide](https://lychee.cli.rs/installation/)), then point `--config` at the shared file from this package.
+
+Shared defaults: `offline = true` (local / relative file links only; http/https skipped for now), Markdown extensions, and common `exclude_path` patterns.
+
+```bash
+# After installing @mengtaoxin/oxc-config as a devDependency:
+lychee --config ./node_modules/@mengtaoxin/oxc-config/lychee.toml '**/*.md'
+```
+
+Project-only path excludes: pass extra `--exclude-path` on the CLI (shared config stays untouched):
+
+```bash
+lychee \
+  --config ./node_modules/@mengtaoxin/oxc-config/lychee.toml \
+  --exclude-path '(^|/)docs/generated/' \
+  '**/*.md'
+```
 
 ## Lint presets
 
@@ -185,6 +206,10 @@ Brought `./react` up to the same recommended + type-aware bar as `./node` in 0.5
 - Added `stack(...names)` from `@mengtaoxin/oxc-config`. Stacks are parallel facts with package-defined weights; argument order does not change the result.
 - Added `fastify` addon (disables `oxc/no-async-endpoint-handlers`).
 - `./node`, `./react`, and `./fmt` remain available for existing imports.
+
+### 0.12.0
+
+- Adds shared `lychee.toml` (exported as `@mengtaoxin/oxc-config/lychee.toml`) for offline Markdown local-link checks. Install lychee on the host and pass `--config` to the package file; this package does not ship lychee itself.
 
 ### 0.11.0
 

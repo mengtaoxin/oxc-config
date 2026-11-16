@@ -1,7 +1,7 @@
 {
   "name": "@mengtaoxin/oxc-config",
-  "version": "0.11.0",
-  "description": "Shared Oxlint and Oxfmt configs for mengtaoxin projects",
+  "version": "0.12.0",
+  "description": "Shared Oxlint, Oxfmt, and lychee configs for mengtaoxin projects",
   "license": "MIT",
   "author": {
     "name": "mengtao",
@@ -29,10 +29,12 @@
       "types": "./src/fmt.d.ts",
       "default": "./src/fmt.js"
     },
+    "./lychee.toml": "./lychee.toml",
     "./package.json": "./package.json"
   },
   "files": [
-    "src"
+    "src",
+    "lychee.toml"
   ],
   "peerDependencies": {
     "oxfmt": ">=0.70.0",
@@ -42,6 +44,7 @@
   "keywords": [
     "oxlint",
     "oxfmt",
+    "lychee",
     "config"
   ],
   "repository": {
